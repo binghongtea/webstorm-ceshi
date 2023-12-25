@@ -10,7 +10,9 @@ const Login = () => {
     const onFinish = async (values)=>{
         console.log(values);
         await dispatch(fetchLogin(values))
+        //跳转到layout
         navigate('/')
+        //antd的全局提示
         message.success('登录成功')
     }
     return (
