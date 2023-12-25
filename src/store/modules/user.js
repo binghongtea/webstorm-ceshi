@@ -4,19 +4,19 @@ const userStore = createSlice({
     name: 'user',
     // 数据状态
     initialState: {
-        token: localStorage.getItem('token_key') || ''
+        token: localStorage.getItem('token_key') ? localStorage.getItem('token_key') : ''
     },
     // 同步修改方法
     reducers: {
-        setUserInfo (state, action) {
-            state.userInfo = action.payload
+        setToken (state, action) {
+            state.token = action.payload
             localStorage.setItem('token_key',action.payload)
         }
     }
 })
 
 // 解构出actionCreater
-const { setUserInfo } = userStore.actions
+const { setToken } = userStore.actions
 
 // 获取reducer函数
 const userReducer = userStore.reducer
@@ -25,7 +25,7 @@ const userReducer = userStore.reducer
 const fetchLogin = (loginForm) => {
     return async (dispatch) => {
         const res = await request.post('/authorizations', loginForm)
-        dispatch(setUserInfo(res.data.token))
+        dispatch(setToken(res.data.token))
     }
 }
 
