@@ -16,6 +16,7 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import {useEffect, useState} from "react";
 import {createArticleAPI, getChannelAPI} from "@/apis/article";
+import {calculateNewValue} from "@testing-library/user-event/dist/utils";
 
 
 const { Option } = Select
@@ -48,11 +49,16 @@ const Publish = () => {
         createArticleAPI(data)
     }
 
-    //
+    // 上传图片
     const [imgList, setImgList] = useState([])
     const onUploadChange = (info)=>{
-        console.log(info)
         setImgList(info.fileList)
+    }
+
+    // 控制图片type
+    const [changeType, setChangeType] = useState(1)
+    const radioGroup_OnChange = (info)=>{
+        setChangeType(info.target.value)
     }
     return (
         <div className="publish">
@@ -88,9 +94,10 @@ const Publish = () => {
                         </Select>
                     </Form.Item>
                     {/*图片上传*/}
+
                     <Form.Item label="封面">
                         <Form.Item name="type">
-                            <Radio.Group>
+                            <Radio.Group onChange={radioGroup_OnChange}>
                                 <Radio value={1}>单图</Radio>
                                 <Radio value={3}>三图</Radio>
                                 <Radio value={0}>无图</Radio>
@@ -103,17 +110,18 @@ const Publish = () => {
                             name 接口内所对应的属性
                             onChange 拿到图片数据 存储到react中
                         */}
-                        <Upload
+                        {changeType > 0 &&  <Upload
                             listType="picture-card"
                             showUploadList
                             action="http://geek.itheima.net/v1_0/upload"
                             name="image"
                             onChange={onUploadChange}
+                            maxCount={changeType}
                         >
                             <div style={{ marginTop: 8 }}>
                                 <PlusOutlined />
                             </div>
-                        </Upload>
+                        </Upload>}
                     </Form.Item>
                     <Form.Item
                         label="内容"
