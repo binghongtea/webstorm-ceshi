@@ -15,12 +15,14 @@ import './index.scss'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import {useEffect, useState} from "react";
-import {getChannelAPI} from "@/apis/article";
+import {createArticleAPI, getChannelAPI} from "@/apis/article";
 
 
 const { Option } = Select
 
 const Publish = () => {
+
+    // 取出序列数据 渲染
     const [channels, setChannels] = useState([])
     useEffect(()=>{
         async function fetchChannels (){
@@ -29,6 +31,22 @@ const Publish = () => {
         }
         fetchChannels()
     }, []);
+
+    // 表单提交
+    const onFinish = (formData)=>{
+        console.log(formData)
+        const {title, content, channel_id} = formData
+        const data = {
+            title,
+            content,
+            cover:{
+                type:0,
+                images:[]
+            },
+            channel_id
+        }
+        createArticleAPI(data)
+    }
     return (
         <div className="publish">
             <Card
@@ -44,6 +62,7 @@ const Publish = () => {
                     labelCol={{ span: 4}}
                     wrapperCol={{ span: 16 }}
                     initialValues={{ type: 1   }}
+                    onFinish={onFinish}
                 >
                     <Form.Item
                         label="标题"
