@@ -47,6 +47,13 @@ const Publish = () => {
         }
         createArticleAPI(data)
     }
+
+    //
+    const [imgList, setImgList] = useState([])
+    const onUploadChange = (info)=>{
+        console.log(info)
+        setImgList(info.fileList)
+    }
     return (
         <div className="publish">
             <Card
@@ -79,6 +86,34 @@ const Publish = () => {
                         <Select placeholder="请选择文章频道" style={{ width: 400 }}>
                             {channels.map(item => (<Option key={item.id} value={item.id}>{item.name}</Option>))}
                         </Select>
+                    </Form.Item>
+                    {/*图片上传*/}
+                    <Form.Item label="封面">
+                        <Form.Item name="type">
+                            <Radio.Group>
+                                <Radio value={1}>单图</Radio>
+                                <Radio value={3}>三图</Radio>
+                                <Radio value={0}>无图</Radio>
+                            </Radio.Group>
+                        </Form.Item>
+                        {/*
+                            listType 决定选择框的外表样式
+                            showUploadList 控制显示上传列表
+                            action 上传接口路径
+                            name 接口内所对应的属性
+                            onChange 拿到图片数据 存储到react中
+                        */}
+                        <Upload
+                            listType="picture-card"
+                            showUploadList
+                            action="http://geek.itheima.net/v1_0/upload"
+                            name="image"
+                            onChange={onUploadChange}
+                        >
+                            <div style={{ marginTop: 8 }}>
+                                <PlusOutlined />
+                            </div>
+                        </Upload>
                     </Form.Item>
                     <Form.Item
                         label="内容"
