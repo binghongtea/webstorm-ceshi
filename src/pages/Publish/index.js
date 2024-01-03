@@ -17,6 +17,7 @@ import 'react-quill/dist/quill.snow.css'
 import {useEffect, useState} from "react";
 import {createArticleAPI, getChannelAPI} from "@/apis/article";
 import {calculateNewValue} from "@testing-library/user-event/dist/utils";
+import useChannel from "@/hooks/useChannel";
 
 
 const { Option } = Select
@@ -24,14 +25,7 @@ const { Option } = Select
 const Publish = () => {
 
     // 取出序列数据 渲染
-    const [channels, setChannels] = useState([])
-    useEffect(()=>{
-        async function fetchChannels (){
-            const res = await getChannelAPI()
-            setChannels(res.data.channels)
-        }
-        fetchChannels()
-    }, []);
+    const {channels} = useChannel()
 
     // 表单提交
     const onFinish = (formData)=>{
