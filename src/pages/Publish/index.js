@@ -7,7 +7,7 @@ import {
     Input,
     Upload,
     Space,
-    Select
+    Select, message
 } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
@@ -36,13 +36,14 @@ const Publish = () => {
     // 表单提交
     const onFinish = (formData)=>{
         console.log(formData)
+        if(imgList.length != imageType) return message.warning('封面类型和图片数量不匹配')
         const {title, content, channel_id} = formData
         const data = {
             title,
             content,
             cover:{
-                type:0,
-                images:[]
+                type:imageType,
+                images:imgList.map(item => item.response.data.url)
             },
             channel_id
         }
@@ -53,12 +54,13 @@ const Publish = () => {
     const [imgList, setImgList] = useState([])
     const onUploadChange = (info)=>{
         setImgList(info.fileList)
+        console.log(imgList)
     }
 
     // 控制图片type
-    const [changeType, setChangeType] = useState(1)
+    const [imageType, setimageType] = useState(1)
     const radioGroup_OnChange = (info)=>{
-        setChangeType(info.target.value)
+        setimageType(info.target.value)
     }
     return (
         <div className="publish">
@@ -110,13 +112,13 @@ const Publish = () => {
                             name 接口内所对应的属性
                             onChange 拿到图片数据 存储到react中
                         */}
-                        {changeType > 0 &&  <Upload
+                        {imageType > 0 &&  <Upload
                             listType="picture-card"
                             showUploadList
                             action="http://geek.itheima.net/v1_0/upload"
                             name="image"
                             onChange={onUploadChange}
-                            maxCount={changeType}
+                            maxCount={imageType}
                         >
                             <div style={{ marginTop: 8 }}>
                                 <PlusOutlined />
