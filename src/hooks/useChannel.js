@@ -11,6 +11,7 @@ const useChannel = () => {
     }
     fetchChannels()
 }, [])
+    return {channels}
 }
 
 
