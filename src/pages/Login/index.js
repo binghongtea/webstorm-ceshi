@@ -20,6 +20,7 @@ const Login = () => {
             <Card className="login-container">
                 <img className="login-logo" src={logo} alt="" />
                 {/* 登录表单 */}
+                {/*validateTrigger 离开输入框才进行规则校验*/}
                 <Form validateTrigger={'onBlur'} onFinish={onFinish}>
                     <Form.Item
                     name="mobile"
